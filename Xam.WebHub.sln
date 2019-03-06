@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xam.WebHub", "Xam.AzureSignalR\Xam.WebHub\Xam.WebHub.csproj", "{570F395B-1133-4AA3-896E-C51E8608EE9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{570F395B-1133-4AA3-896E-C51E8608EE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{570F395B-1133-4AA3-896E-C51E8608EE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{570F395B-1133-4AA3-896E-C51E8608EE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{570F395B-1133-4AA3-896E-C51E8608EE9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7FFC365-D574-4E17-82AF-E547BC01EAD9}
+	EndGlobalSection
+EndGlobal
