@@ -16,8 +16,9 @@ namespace Xam.AzureSignalR.Helpers
 
         public async void InitializeSignalR()
         {
-            var hubConnection = new HubConnection("http://catirw.azurewebsites.net/");
-            _hub = hubConnection.CreateHubProxy("clienthub");
+            
+            var hubConnection = new HubConnection("http://localhost:55580/signalr");
+            _hub = hubConnection.CreateHubProxy("chat");
 
             _hub.On<string, double, Color, double>("BroadcastMessage",
                     (command, sliderValue, textColor, newValue) => ValueChanged?.Invoke(this, new ValueChangedEventArgs(command, sliderValue, textColor, newValue)));
