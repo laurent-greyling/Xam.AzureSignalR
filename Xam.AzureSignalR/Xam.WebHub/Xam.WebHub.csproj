@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Content Remove="wwwroot\Index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Index.html" />
   </ItemGroup>
 
   <ItemGroup>
