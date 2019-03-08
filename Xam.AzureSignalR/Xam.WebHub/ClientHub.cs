@@ -7,7 +7,7 @@ namespace Xam.WebHub
         
         public void BroadcastMessage(string name, string message)
         {
-            Clients.All.SendAsync("broadcastMessage", name, message);
+            Clients.All.SendAsync("BroadcastMessage", name, message);
         }
 
         public void Echo(string name, string message)

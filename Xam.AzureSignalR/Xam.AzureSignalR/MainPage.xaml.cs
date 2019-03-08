@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Xam.AzureSignalR.Helpers;
 using Xamarin.Forms;
+using ValueChangedEventArgs = Xamarin.Forms.ValueChangedEventArgs;
 
 namespace Xam.AzureSignalR
 {
@@ -31,7 +32,8 @@ namespace Xam.AzureSignalR
             Maximum = 360
         };
 
-        public event EventHandler ValueChanged;
+        private Color TextColor;
+
         private SignalRClient signalR = new SignalRClient();
         private double sliderValue;
         private double newValue;
@@ -40,17 +42,33 @@ namespace Xam.AzureSignalR
         {
             InitializeComponent();
 
-            Task.Run(async ()=> await signalR.InitializeSignalR("UserID"));
+            Task.Run(async ()=>
+            {
+                signalR.InitializeSignalR("UserID");
+
+                await signalR.StartAsync();
+
+                signalR.ValueChanged += (sender, e)=> 
+                {
+                    var vc = e as ValueChangedEventArgs;
+                    sliderValue = slider.Value;
+                    newValue = vc.NewValue;
+                    rotationLabel.Rotation = sliderValue;
+                    rotationLabel.TextColor = TextColor;
+                    displayLabel.Text = String.Format("The Slider value is {0}", newValue);
+                };
+            });
             
             slider.ValueChanged += async (sender, args) =>
             {
-                await signalR.StartAsync();
-
                 sliderValue = slider.Value;
                 newValue = args.NewValue;
+                TextColor = Color.FromRgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
                 rotationLabel.Rotation = sliderValue;
-                rotationLabel.TextColor = Color.FromRgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                rotationLabel.TextColor = TextColor;
                 displayLabel.Text = String.Format("The Slider value is {0}", newValue);
+
+                await SendMessage("SendMessage", sliderValue, TextColor, newValue);
 
                 var server = new ServerHandler(slider.Value, rotationLabel.TextColor, newValue);
                 await server.Start();
@@ -71,15 +89,15 @@ namespace Xam.AzureSignalR
             };           
         }
 
-        //private async Task SendMessage(string command, double sliderValue, Color textColor, double newValue)
-        //{
-        //    try
-        //    {
-        //        await signalR.HubConnection.SendAsync("SendMessage", new object[] { command, sliderValue, textColor, newValue });
-        //        //hub?.Invoke("BroadcastMessage",
-        //        //    new object[] { command, sliderValue, textColor, newValue });
-        //    }
-        //    catch { }
-        //}
+        private async Task SendMessage(string command, double sliderValue, Color textColor, double newValue)
+        {
+            try
+            {
+                await signalR.HubConnection.SendAsync(command, new object[] { command, sliderValue, textColor, newValue });
+                //hub?.Invoke("BroadcastMessage",
+                //    new object[] { command, sliderValue, textColor, newValue });
+            }
+            catch { }
+        }
     }
 }
