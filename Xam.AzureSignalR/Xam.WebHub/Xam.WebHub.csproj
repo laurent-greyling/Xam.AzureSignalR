@@ -6,10 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\site.css" />
     <Content Remove="wwwroot\Index.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\site.css" />
     <None Include="wwwroot\Index.html" />
   </ItemGroup>
 

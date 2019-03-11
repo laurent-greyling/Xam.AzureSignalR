@@ -9,18 +9,27 @@ namespace TestChat
 {
     public class Client
     {
+        //public ChatMessageViewModel ChatVM { get; set; } = new ChatMessageViewModel();
+        private HubConnection Connection { get; set; }
+
         public async Task Init()
         {
             try
             {
-                var hubConnection = new HubConnectionBuilder().WithUrl("https://10.0.2.2:44333/").Build();
+                Connection = new HubConnectionBuilder().WithUrl("https://ff.azurewebsites.net/clienthub").Build();
+                await Connection.StartAsync();
 
-                hubConnection.On<string>("BroadcastMessage", msg =>
+                Connection.On<string, string>("BroadcastMessage", (name, message)=> 
                 {
-                    Message?.Invoke(this, msg);
-                });
+                    var msg = new ChatMessage
+                    {
+                        Username = name,
+                        Message = message
+                    };
 
-                await hubConnection.StartAsync();
+                    //ChatVM.Messages.Add(msg);
+                    Message?.Invoke(this, message);
+                });
             }
             catch (Exception e)
             {
@@ -28,6 +37,11 @@ namespace TestChat
                 throw;
             }
             
+        }
+
+        public async Task Broadcast(string name, string message)
+        {
+            await Connection.InvokeAsync("BroadcastMessage", name, message);
         }
 
         public event EventHandler<string> Message;

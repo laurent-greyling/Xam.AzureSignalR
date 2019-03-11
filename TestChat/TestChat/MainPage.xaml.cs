@@ -9,6 +9,8 @@ namespace TestChat
 {
     public partial class MainPage : ContentPage
     {
+        private ChatMessageViewModel vm = new ChatMessageViewModel();
+
         public MainPage()
         {
             InitializeComponent();
@@ -22,6 +24,7 @@ namespace TestChat
                 Text = "Send"
             };
 
+            var textLabel = new Label();
             var stack = new StackLayout { Padding = new Thickness(5, 5, 5, 5) };   
 
             scroll.Content = stack;
@@ -31,33 +34,23 @@ namespace TestChat
             stack1.Children.Add(entry);
             stack1.Children.Add(send);
 
-            client.Message += async (sender, e) =>
+            send.Clicked += async (sender, e) =>
             {
-                var textlabel = new Label
+                if (!string.IsNullOrEmpty(entry.Text))
                 {
-                    Text = e
-                };
-
-                stack.Children.Add(textlabel);
-                await scroll.ScrollToAsync(0, entry.Y, true);
+                    await client.Broadcast("UWP", entry.Text);
+                }
             };
 
-            send.Clicked += async (sender, e) =>
-                {
-                    if (!string.IsNullOrEmpty(entry.Text))
-                    {
-                        var textlabel = new Label
-                        {
-                            Text = entry.Text
-                        };
+            client.Message += (sender, e) =>
+            {
+                textLabel.Text = e;                
+            };
 
-                        stack.Children.Add(textlabel);
-                        await scroll.ScrollToAsync(0, entry.Y, true);
-                    }
-                };
+            stack.Children.Add(textLabel);
+            scroll.ScrollToAsync(0, entry.Y, true);
 
             Content = stack1;
-
             Task.Run(async () => await client.Init());
         }
     }
