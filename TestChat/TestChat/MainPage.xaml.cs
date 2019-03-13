@@ -9,13 +9,18 @@ namespace TestChat
 {
     public partial class MainPage : ContentPage
     {
-        private ChatMessageViewModel vm = new ChatMessageViewModel();
+        private ChatMessageViewModel vm => new ChatMessageViewModel();
 
         public MainPage()
         {
             InitializeComponent();
 
+            
+
             var client = new Client();
+            var text = string.Empty;
+           
+
             var scroll = new ScrollView();
             
             var entry = new Entry();
@@ -24,7 +29,6 @@ namespace TestChat
                 Text = "Send"
             };
 
-            var textLabel = new Label();
             var stack = new StackLayout { Padding = new Thickness(5, 5, 5, 5) };   
 
             scroll.Content = stack;
@@ -40,17 +44,27 @@ namespace TestChat
                 {
                     await client.Broadcast("UWP", entry.Text);
                 }
-            };
+            };            
 
-            client.Message += (sender, e) =>
-            {
-                textLabel.Text = e;                
-            };
-
-            stack.Children.Add(textLabel);
+            //stack.Children.Add(textLabel);
             scroll.ScrollToAsync(0, entry.Y, true);
 
             Content = stack1;
+            
+            client.Message += (sender, e) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    var textLabel = new Label
+                    {
+                        Text = e
+                    };
+                    stack.Children.Add(textLabel);
+                });
+
+                text = e;
+            };
+
             Task.Run(async () => await client.Init());
         }
     }

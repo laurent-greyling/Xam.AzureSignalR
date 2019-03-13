@@ -7,6 +7,6 @@ namespace TestChat
 {
     public class ChatMessageViewModel
     {
-        public ObservableCollection<ChatMessage> Messages { get; set; } = new ObservableCollection<ChatMessage>();
+        public ObservableCollection<string> Messages { get; set; } = new ObservableCollection<string>();
     }
 }

@@ -16,7 +16,7 @@ namespace TestChat
         {
             try
             {
-                Connection = new HubConnectionBuilder().WithUrl("https://ff.azurewebsites.net/clienthub").Build();
+                Connection = new HubConnectionBuilder().WithUrl("https://127.0.0.1:44333/clienthub").Build();
                 await Connection.StartAsync();
 
                 Connection.On<string, string>("BroadcastMessage", (name, message)=> 
