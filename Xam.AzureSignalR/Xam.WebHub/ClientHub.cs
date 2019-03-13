@@ -5,14 +5,14 @@ namespace Xam.WebHub
     public class ClientHub: Hub
     {
         
-        public void BroadcastMessage(string name, string message)
+        public void BroadcastMessage(MessageModel message)
         {
-            Clients.All.SendAsync("BroadcastMessage", name, message);
+            Clients.All.SendAsync("BroadcastMessage", message);
         }
 
-        public void Echo(string name, string message)
+        public void Echo(MessageModel message)
         {
-            Clients.Client(Context.ConnectionId).SendAsync("echo", name, message + " (echo from server)");
+            Clients.Client(Context.ConnectionId).SendAsync("echo", message.Name, message.Message + " (echo from server)");
         }
     }
 }

@@ -12,7 +12,6 @@ namespace TestChat
 {
     public class Client
     {
-        //public ChatMessageViewModel ChatVM { get; set; } = new ChatMessageViewModel();
         private HubConnection Connection { get; set; }
 
         public async Task Init()
@@ -21,6 +20,7 @@ namespace TestChat
             {
                 Connection = new HubConnectionBuilder().WithUrl("https://localhost:44333/clienthub", options =>
                 {
+#if DEBUG
                     options.HttpMessageHandlerFactory = (handler) =>
                     {
                         if (handler is HttpClientHandler clientHandler)
@@ -29,19 +29,13 @@ namespace TestChat
                         }
                         return handler;
                     };
+#endif
                 }).Build();
 
                 await Connection.StartAsync();
 
-                Connection.On<string, string>("BroadcastMessage", (name, message)=> 
+                Connection.On<MessageModel>("BroadcastMessage", message=> 
                 {
-                    var msg = new ChatMessage
-                    {
-                        Username = name,
-                        Message = message
-                    };
-
-                    //ChatVM.Messages.Add(msg);
                     Message?.Invoke(this, message);
                 });
             }
@@ -60,11 +54,11 @@ namespace TestChat
             return true;
         }
 
-        public async Task Broadcast(string name, string message)
+        public async Task Broadcast(MessageModel message)
         {
-            await Connection.InvokeAsync("BroadcastMessage", name, message);
+            await Connection.InvokeAsync("BroadcastMessage", message);
         }
 
-        public event EventHandler<string> Message;
+        public event EventHandler<MessageModel> Message;
     }
 }
