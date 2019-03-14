@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestChat.Serverless;
 using Xamarin.Forms;
 
 namespace TestChat
@@ -13,9 +14,11 @@ namespace TestChat
 
         public MainPage()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            //Serverless
+            var client = new ClientHandler("UWP");
+            //var client = new Client();
 
-            var client = new Client();            
             var scroll = new ScrollView();
             var entry = new Entry();
             var textLabel = new Label();
@@ -57,14 +60,25 @@ namespace TestChat
                         Message = entry.Text
                     };
 
-                    await client.Broadcast(message);
+                    //sereverless
+                    //send user <User Id>
+                    //send users < User List >
+                    //send group < Group Name >
+                    // send groups < Group List >
+                    //  broadcast
+                    var server = new ServerHandler(message);
+                    await server.Start("send user UWP");
+                    //await client.Broadcast(message);
                 }
             };
 
             scroll.ScrollToAsync(0, entry.Y, true);
 
             Content = stack1;
-            
+
+            //serverless
+            Task.Run(async () => await client.StartAsync());
+
             client.Message += (sender, e) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -73,7 +87,7 @@ namespace TestChat
                 });
             };
 
-            Task.Run(async () => await client.Init());
+            //Task.Run(async () => await client.Init());
         }
     }
 }

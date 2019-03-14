@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -16,54 +19,49 @@ namespace TestChat.Serverless
 
         private readonly ServiceUtils _serviceUtils;
 
-        private readonly string _hubName;
-
         private readonly string _endpoint;
 
         private readonly PayloadMessage _defaultPayloadMessage;
 
-        public ServerHandler(string connectionString, string hubName)
+        private string ConnectionString => "";
+        private readonly string _hubName;
+
+        public ServerHandler(MessageModel message)
         {
             _serverName = GenerateServerName();
-            _serviceUtils = new ServiceUtils(connectionString);
-            _hubName = hubName;
+            _serviceUtils = new ServiceUtils(ConnectionString);
             _endpoint = _serviceUtils.Endpoint;
-
+            _hubName = "clienthub";
             _defaultPayloadMessage = new PayloadMessage
             {
                 Target = "SendMessage",
                 Arguments = new[]
                 {
                     _serverName,
-                    "Hello from server",
+                    "Hello from server"
                 }
             };
         }
 
-        public async Task Start()
+        public async Task Start(string cmd)
         {
-            ShowHelp();
-            while (true)
+            if (cmd == null)
             {
-                var argLine = Console.ReadLine();
-                if (argLine == null)
-                {
-                    continue;
-                }
-                var args = argLine.Split(' ');
+                return;
+            }
+            var args = Regex.Split(cmd, " ");
 
-                if (args.Length == 1 && args[0].Equals("broadcast"))
-                {
-                    await SendRequest(args[0], _hubName);
-                }
-                else if (args.Length == 3 && args[0].Equals("send"))
-                {
-                    await SendRequest(args[1], _hubName, args[2]);
-                }
-                else
-                {
-                    Console.WriteLine($"Can't recognize command {argLine}");
-                }
+            if (args.Length == 1 && args[0].Equals("broadcast"))
+            {
+                await SendRequest(args[0], _hubName);
+            }
+            else if (args.Length == 3 && args[0].Equals("send"))
+            {
+                await SendRequest(args[1], _hubName, args[2]);
+            }
+            else
+            {
+                Debug.WriteLine($"Can't recognize command {cmd}");
             }
         }
 

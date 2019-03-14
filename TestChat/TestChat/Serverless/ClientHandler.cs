@@ -6,15 +6,16 @@ namespace TestChat.Serverless
 {
     public class ClientHandler
     {
-        private readonly HubConnection _connection;
+        private HubConnection Connection { get; set; }
+        private string ConnectionString => "";
 
-        public ClientHandler(string connectionString, string hubName, string userId)
+        public ClientHandler(string userId)
         {
-            var serviceUtils = new ServiceUtils(connectionString);
+            var serviceUtils = new ServiceUtils(ConnectionString);
 
-            var url = GetClientUrl(serviceUtils.Endpoint, hubName);
+            var url = GetClientUrl(serviceUtils.Endpoint);
 
-            _connection = new HubConnectionBuilder()
+            Connection = new HubConnectionBuilder()
                 .WithUrl(url, option =>
                 {
                     option.AccessTokenProvider = () =>
@@ -23,31 +24,31 @@ namespace TestChat.Serverless
                     };
                 }).Build();
 
-            _connection.On<string, string>("SendMessage",
-                (string server, string message) =>
+            Connection.On<string, string>("SendMessage",
+                (server, message) =>
                 {
-                    var model = new MessageModel
+                    var msg = new MessageModel
                     {
-                        Name =server,
+                        Name = server,
                         Message = message
                     };
-                    Message?.Invoke(this, model);                    
+                    Message?.Invoke(this, msg);                    
                 });
         }
 
         public async Task StartAsync()
         {
-            await _connection.StartAsync();
+            await Connection.StartAsync();
         }
 
         public async Task DisposeAsync()
         {
-            await _connection.DisposeAsync();
+            await Connection.DisposeAsync();
         }
 
-        private string GetClientUrl(string endpoint, string hubName)
+        private string GetClientUrl(string endpoint)
         {
-            return $"{endpoint}/client/?hub={hubName}";
+            return $"{endpoint}/client/?hub=clienthub";
         }
 
         public event EventHandler<MessageModel> Message;
