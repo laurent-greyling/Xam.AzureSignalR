@@ -35,12 +35,11 @@ namespace TestChat.Serverless
             _defaultPayloadMessage = new PayloadMessage
             {
                 Target = "SendMessage",
-                Arguments = new[]
+                Arguments = new object[]
                 {
                     _serverName,
-                    message.Name,
-                    message.Message
-                },
+                    message
+                }
             };
         }
 
