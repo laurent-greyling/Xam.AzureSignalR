@@ -24,12 +24,12 @@ namespace TestChat.Serverless
                     };
                 }).Build();
 
-            Connection.On<string, string>("SendMessage",
-                (server, message) =>
+            Connection.On<string, string, string>("SendMessage",
+                (server, name, message) =>
                 {
                     var msg = new MessageModel
                     {
-                        Name = server,
+                        Name = name,
                         Message = message
                     };
                     Message?.Invoke(this, msg);                    

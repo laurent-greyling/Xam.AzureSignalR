@@ -38,8 +38,9 @@ namespace TestChat.Serverless
                 Arguments = new[]
                 {
                     _serverName,
-                    "Hello from server"
-                }
+                    message.Name,
+                    message.Message
+                },
             };
         }
 
