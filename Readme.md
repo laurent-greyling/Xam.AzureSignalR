@@ -170,3 +170,9 @@ For the serverless example see the `TestChat` app and the [serverless folder](ht
     await server.Start("send user UWP");    
     ```
 
+For the serverless example your connection string to SignalR will be now part of your app, whereas with the hub solution your webapp will contain the connection string but not your Xamarin Forms App.
+
+If you copy your connections string into the `ClientHandler` and the `ServerHandler` and start up the app in `Android` and `UWP` things should start working for you.
+
+![serverless](https://user-images.githubusercontent.com/17876815/54533546-bc997980-498a-11e9-87db-9fd73976fd09.gif)
+
