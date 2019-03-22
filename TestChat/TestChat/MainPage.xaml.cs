@@ -38,7 +38,7 @@ namespace TestChat
             stack1.Children.Add(entry);
             stack1.Children.Add(send);
 
-            ////if you want a more live type update
+            //if you want a more live type update
             //entry.TextChanged += async (sender, e) =>
             //{
             //    var message = new MessageModel
@@ -47,7 +47,10 @@ namespace TestChat
             //        Message = e.NewTextValue
             //    };
 
-            //    await client.Broadcast(message);
+            //    //serverless
+            //    var server = new ServerHandler(message);
+            //    await server.Start("send user UWP");
+            //    //await client.Broadcast(message);
             //};
 
             send.Clicked += async (sender, e) =>
