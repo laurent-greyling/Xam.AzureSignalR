@@ -1,6 +1,6 @@
 # POC for Nfield CATI watch with SignalR
 
-To run this POC you will need an Azure SignalR connection string. You can do this by creating a [SignalR service in Azure](https://github.com/NIPOSoftwareBV/Nfield-Documentation/tree/master/features/nfield-cati/POC/Xam.AzureSignalR)
+To run this POC you will need an Azure SignalR connection string. You can do this by creating a [SignalR service in Azure](https://github.com/laurent-greyling/Xam.AzureSignalR)
 
 This project is a serverless SignalR, so remember to put it to serverless in __Settings__.
 
