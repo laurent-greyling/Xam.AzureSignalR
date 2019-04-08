@@ -10,7 +10,7 @@ This will allow you to start up the project.
 
 To see the functionality work you can do the following:
 
-- Start up 1 - 2 Android emulators, these will be the interviewers
+- Start up 1 - 3 Android emulators, these will be the interviewers
 	- currently interviewers are not really added dynamically, so cannot handle more than 3
 	- Also in this project we can use android emulators for multi interviewers as we did not look into creating multiple instances of uwp in this POC (though possible)
 - start up the UWP app as the manager.
