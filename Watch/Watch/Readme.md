@@ -18,5 +18,5 @@ To see the functionality work you can do the following:
 - because of how interviewers are added, you might need to clear the SQLite db in manager side (if things start becoming `Twilight Zone` on you), there is a delete button in manager side in navigation bar (3 dots)
 - the manager can also stop listening and then no action of the interviewer will come through.
 
-Will add Gif of how it works once we discussed it in the Demo.
+![watchManager](https://user-images.githubusercontent.com/17876815/55707352-af006e00-59e3-11e9-9770-e2a072a151ba.gif)
 
